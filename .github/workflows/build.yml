@@ -1,0 +1,37 @@
+name: Build FloatPad
+
+on:
+  workflow_dispatch:   # run manually from Actions tab
+  push:                # or automatically on push to main
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Install 7-Zip
+        run: choco install 7zip -y
+
+      - name: Create archive
+        shell: pwsh
+        run: |
+          if (Test-Path metapad.txt) {
+            7z a -y FloatPad.7z metapad.exe Glass2k.exe metapad.txt
+          } else {
+            7z a -y FloatPad.7z metapad.exe Glass2k.exe
+          }
+
+      - name: Build SFX EXE
+        shell: cmd
+        run: copy /b 7zSD.sfx + config.txt + FloatPad.7z FloatPad.exe
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FloatPad
+          path: FloatPad.exe
