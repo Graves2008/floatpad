@@ -1,0 +1,6 @@
+;!@Install@!UTF-8!
+Title="Floating Notepad"
+BeginPrompt="Do you want to run Floating Notepad?"
+RunProgram="metapad.exe"
+RunProgram="glass2k.exe"
+;!@InstallEnd@!
